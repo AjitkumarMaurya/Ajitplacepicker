@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/AjitkumarMaurya/Ajitplacepicker.svg)](https://jitpack.io/#AjitkumarMaurya/Ajitplacepicker)
 
 If you're here looking for a place picker you have probably read this:
 
