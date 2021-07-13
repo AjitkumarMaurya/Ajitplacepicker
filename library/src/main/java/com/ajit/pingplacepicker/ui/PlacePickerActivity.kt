@@ -3,6 +3,7 @@ package com.ajit.pingplacepicker.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender.SendIntentException
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
@@ -23,13 +24,22 @@ import androidx.core.view.isVisible
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.ajit.pingplacepicker.PingPlacePicker
+import com.ajit.pingplacepicker.R
+import com.ajit.pingplacepicker.helper.PermissionsHelper
+import com.ajit.pingplacepicker.inject.PingKoinComponent
+import com.ajit.pingplacepicker.viewmodel.PlacePickerViewModel
+import com.ajit.pingplacepicker.viewmodel.Resource
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.widget.Autocomplete
@@ -44,16 +54,15 @@ import com.google.maps.android.SphericalUtil
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
-import com.ajit.pingplacepicker.PingPlacePicker
-import com.ajit.pingplacepicker.R
-import com.ajit.pingplacepicker.helper.PermissionsHelper
-import com.ajit.pingplacepicker.inject.PingKoinComponent
-import com.ajit.pingplacepicker.viewmodel.PlacePickerViewModel
-import com.ajit.pingplacepicker.viewmodel.Resource
 import io.reactivex.disposables.CompositeDisposable
 import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
+
+import com.google.android.gms.location.LocationSettingsRequest
+
+import com.google.android.gms.location.LocationSettingsResult
+
 
 class PlacePickerActivity : AppCompatActivity(),
     PingKoinComponent,
@@ -314,6 +323,53 @@ class PlacePickerActivity : AppCompatActivity(),
         return LatLngBounds(southWest, northEast)
     }
 
+    private fun EnableGPSAutoManually() {
+        val locationRequest: LocationRequest = LocationRequest.create()
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        locationRequest.setInterval(5 * 1000)
+        locationRequest.setFastestInterval(5 * 1000)
+        val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+        val builder2: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        builder2.setNeedBle(true)
+        val result2: Task<LocationSettingsResponse?> =
+            LocationServices.getSettingsClient(this).checkLocationSettings(builder2.build())
+        result2.addOnCompleteListener((OnCompleteListener<LocationSettingsResponse?> { task: Task<LocationSettingsResponse?> ->
+            try {
+                val response: LocationSettingsResponse? = task.getResult(ApiException::class.java)
+                getDeviceLocation(false)
+                //location granted
+            } catch (exception: ApiException) {
+                when (exception.getStatusCode()) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->                         // Location settings are not satisfied. But could be fixed by showing the
+                        // user a dialog.
+                        try {
+                            // Cast to a resolvable exception.
+                            val resolvable: ResolvableApiException =
+                                exception as ResolvableApiException
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            resolvable.startResolutionForResult(
+                                this@PlacePickerActivity,
+                                345
+                            )
+
+                            getDeviceLocation(false)
+
+                        } catch (e: SendIntentException) {
+                            // Ignore the error.
+                        } catch (e: ClassCastException) {
+                            // Ignore, should be an impossible error.
+                        }
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                    }
+                }
+            }
+        } as OnCompleteListener<LocationSettingsResponse?>?)!!)
+    }
+
     private fun getDeviceLocation(animate: Boolean) {
 
         // Get the best and most recent location of the device, which may be null in rare
@@ -333,6 +389,10 @@ class PlacePickerActivity : AppCompatActivity(),
                         } else {
                             // Location is not available. Give up...
                             setDefaultLocation()
+
+
+                            EnableGPSAutoManually()
+
                             Snackbar.make(
                                 coordinator,
                                 R.string.picker_location_unavailable,
