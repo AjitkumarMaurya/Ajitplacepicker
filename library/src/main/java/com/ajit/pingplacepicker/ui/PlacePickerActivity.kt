@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -59,10 +60,6 @@ import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
-import com.google.android.gms.location.LocationSettingsRequest
-
-import com.google.android.gms.location.LocationSettingsResult
-
 
 class PlacePickerActivity : AppCompatActivity(),
     PingKoinComponent,
@@ -111,7 +108,8 @@ class PlacePickerActivity : AppCompatActivity(),
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    private lateinit var toolbar:Toolbar
+    private lateinit var toolbar: Toolbar
+    var valueCheck: Int = 0;
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var mapContainer: ConstraintLayout
     private lateinit var rvNearbyPlaces: RecyclerView
@@ -339,7 +337,10 @@ class PlacePickerActivity : AppCompatActivity(),
         result2.addOnCompleteListener((OnCompleteListener<LocationSettingsResponse?> { task: Task<LocationSettingsResponse?> ->
             try {
                 val response: LocationSettingsResponse? = task.getResult(ApiException::class.java)
+
+
                 getDeviceLocation(false)
+
                 //location granted
             } catch (exception: ApiException) {
                 when (exception.getStatusCode()) {
@@ -385,14 +386,18 @@ class PlacePickerActivity : AppCompatActivity(),
                     if (location == null) {
                         if (maxLocationRetries > 0) {
                             maxLocationRetries--
-                            Handler().postDelayed({ getDeviceLocation(animate) }, 1000)
+                            Handler(Looper.getMainLooper()).postDelayed(
+                                { getDeviceLocation(animate) },
+                                1000
+                            )
                         } else {
                             // Location is not available. Give up...
                             setDefaultLocation()
 
-
-                            EnableGPSAutoManually()
-
+                            if (valueCheck == 0) {
+                                EnableGPSAutoManually()
+                                valueCheck++
+                            }
                             Snackbar.make(
                                 coordinator,
                                 R.string.picker_location_unavailable,
