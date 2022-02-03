@@ -29,7 +29,7 @@ object PermissionsHelper {
                     CompositePermissionListener(dialogPermissionListener)
                 }
 
-        Dexter.withActivity(activity)
+        Dexter.withContext(activity)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(compositeListener)
                 .check()
