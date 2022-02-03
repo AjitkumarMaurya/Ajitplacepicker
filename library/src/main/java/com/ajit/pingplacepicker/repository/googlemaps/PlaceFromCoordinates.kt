@@ -62,10 +62,6 @@ internal class PlaceFromCoordinates(
         return null
     }
 
-    override fun getIconBackgroundColor(): Int? {
-        return null
-    }
-
     override fun getPriceLevel(): Int? {
         return null
     }
@@ -82,9 +78,6 @@ internal class PlaceFromCoordinates(
         return null
     }
 
-    override fun getIconUrl(): String? {
-        return null
-    }
 
     override fun getPlusCode(): PlusCode? {
         return null
