@@ -4,8 +4,7 @@ import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.*
-import kotlinx.parcelize.Parcelize
-
+import kotlinx.android.parcel.Parcelize
 @Parcelize
 class CustomPlace(
     var placeId: String,
@@ -56,6 +55,10 @@ class CustomPlace(
         return null
     }
 
+    override fun getIconBackgroundColor(): Int? {
+        return null
+    }
+
     override fun getPriceLevel(): Int? {
         return null
     }
@@ -70,6 +73,10 @@ class CustomPlace(
 
     override fun getAddress(): String? {
         return placeAddress
+    }
+
+    override fun getIconUrl(): String? {
+        return null
     }
 
     override fun getPlusCode(): PlusCode? {

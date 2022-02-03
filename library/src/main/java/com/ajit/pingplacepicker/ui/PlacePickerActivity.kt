@@ -215,12 +215,7 @@ class PlacePickerActivity : AppCompatActivity(),
         disposables.clear()
     }
 
-    override fun onMapReady(map: GoogleMap?) {
-        googleMap = map
-        setMapStyle()
-        map?.setOnMarkerClickListener(this)
-        checkForPermission()
-    }
+
 
     override fun onMarkerClick(marker: Marker): Boolean {
 
@@ -286,7 +281,7 @@ class PlacePickerActivity : AppCompatActivity(),
                         MarkerOptions()
                             .position(it)
                             .icon(getPlaceMarkerBitmap(place))
-                    )
+                    )!!
 
                     marker.tag = place
                 }
@@ -415,7 +410,7 @@ class PlacePickerActivity : AppCompatActivity(),
                     lastKnownLocation = LatLng(location.latitude, location.longitude)
 
                     val update = CameraUpdateFactory
-                        .newLatLngZoom(lastKnownLocation, defaultZoom)
+                        .newLatLngZoom(lastKnownLocation!!, defaultZoom)
 
                     if (animate) {
                         googleMap?.animateCamera(update)
@@ -709,5 +704,12 @@ class PlacePickerActivity : AppCompatActivity(),
                 it.isMyLocationEnabled = false
             }
         }
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        setMapStyle()
+        map?.setOnMarkerClickListener(this)
+        checkForPermission()
     }
 }
