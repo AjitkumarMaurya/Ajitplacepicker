@@ -55,6 +55,10 @@ class CustomPlace(
         return null
     }
 
+    override fun getIconBackgroundColor(): Int? {
+        TODO("Not yet implemented")
+    }
+
 
     override fun getPriceLevel(): Int? {
         return null
@@ -72,6 +76,9 @@ class CustomPlace(
         return placeAddress
     }
 
+    override fun getIconUrl(): String? {
+        TODO("Not yet implemented")
+    }
 
 
     override fun getPlusCode(): PlusCode? {

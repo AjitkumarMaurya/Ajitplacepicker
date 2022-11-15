@@ -3,16 +3,19 @@ package com.myassociation
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.libraries.places.api.model.Place
 import com.ajit.pingplacepicker.PingPlacePicker
 import com.ajit.pingsample.R
+import com.google.android.libraries.places.api.model.Place
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
-    private val pingActivityRequestCode = 1001
+    var waitResult: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +23,17 @@ class MainActivity : AppCompatActivity() {
 
         btnOpenPlacePicker.setOnClickListener {
             showPlacePicker()
+        }
+
+        waitResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                val place: Place? = PingPlacePicker.getPlace(result.data!!)
+                toast("You selected: ${place?.name}\n ${place?.id}")
+
+            }
         }
     }
 
@@ -36,20 +50,10 @@ class MainActivity : AppCompatActivity() {
 
         try {
             val placeIntent = builder.build(this)
-            startActivityForResult(placeIntent, pingActivityRequestCode)
+            waitResult!!.launch(placeIntent)
         } catch (ex: Exception) {
             toast("Google Play Services is not Available")
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if ((requestCode == pingActivityRequestCode) && (resultCode == Activity.RESULT_OK)) {
-
-            val place: Place? = PingPlacePicker.getPlace(data!!)
-
-            toast("You selected: ${place?.name}\n ${place?.id}")
-        }
-    }
 }

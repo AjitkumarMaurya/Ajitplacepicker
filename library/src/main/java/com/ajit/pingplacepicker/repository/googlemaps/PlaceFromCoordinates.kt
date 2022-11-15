@@ -62,6 +62,10 @@ internal class PlaceFromCoordinates(
         return null
     }
 
+    override fun getIconBackgroundColor(): Int? {
+        TODO("Not yet implemented")
+    }
+
     override fun getPriceLevel(): Int? {
         return null
     }
@@ -76,6 +80,10 @@ internal class PlaceFromCoordinates(
 
     override fun getAddress(): String? {
         return null
+    }
+
+    override fun getIconUrl(): String? {
+        TODO("Not yet implemented")
     }
 
 
