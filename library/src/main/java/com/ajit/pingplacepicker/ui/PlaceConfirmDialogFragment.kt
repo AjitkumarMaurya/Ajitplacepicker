@@ -77,7 +77,7 @@ class PlaceConfirmDialogFragment : AppCompatDialogFragment(), PingKoinComponent 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val builder = AlertDialog.Builder(requireActivity())
+        val builder = AlertDialog.Builder(requireActivity(),R.style.AlertDialogTheme)
 
         builder.setTitle(R.string.picker_place_confirm)
             .setView(getContentView(requireContext()))
