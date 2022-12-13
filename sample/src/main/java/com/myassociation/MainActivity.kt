@@ -8,6 +8,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.ajit.pingplacepicker.PingPlacePicker
+import com.ajit.pingplacepicker.galleryimagepicker.ImagePicker
+import com.ajit.pingplacepicker.galleryimagepicker.RedBookPresenter
+import com.ajit.pingplacepicker.galleryimagepicker.bean.MimeType
+import com.ajit.pingplacepicker.galleryimagepicker.data.OnImagePickCompleteListener
 import com.ajit.pingsample.R
 import com.google.android.libraries.places.api.model.Place
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,6 +27,29 @@ class MainActivity : AppCompatActivity() {
 
         btnOpenPlacePicker.setOnClickListener {
             showPlacePicker()
+        }
+        btnOpenGallery.setOnClickListener {
+
+            ImagePicker.withCrop(RedBookPresenter())
+                .setMaxCount(5)
+                .showCamera(true)
+                .setColumnCount(4)
+                .mimeTypes(MimeType.ofImage())
+                .filterMimeTypes(MimeType.GIF)
+                .assignGapState(true)
+                .setFirstImageItem(null)
+                .setFirstImageItemSize(1, 1)
+                .setVideoSinglePick(true)
+                .setMaxVideoDuration(60000L)
+                .setMinVideoDuration(3000L)
+                .pick(
+                    this@MainActivity,
+                    OnImagePickCompleteListener { items ->
+
+
+
+                    } as OnImagePickCompleteListener?)
+
         }
 
         waitResult = registerForActivityResult(
