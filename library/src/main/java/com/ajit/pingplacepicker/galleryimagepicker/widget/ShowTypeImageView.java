@@ -179,9 +179,7 @@ public class ShowTypeImageView extends ImageView {
         }
     }
 
-    /**
-     * 获得屏幕高度
-     */
+
     public int getScreenHeight() {
         WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);

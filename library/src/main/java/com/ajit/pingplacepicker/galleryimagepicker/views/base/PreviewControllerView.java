@@ -45,23 +45,13 @@ public abstract class PreviewControllerView extends PBaseLayout {
     public abstract void initData(BaseSelectConfig selectConfig, IPickerPresenter presenter,
                                   PickerUiConfig uiConfig, ArrayList<ImageItem> selectedList);
 
-    /**
-     * @return 获取可以点击完成的View
-     */
+
     public abstract View getCompleteView();
 
-    /**
-     * 单击图片
-     */
+
     public abstract void singleTap();
 
-    /**
-     * 图片切换回调
-     *
-     * @param position          当前图片索引
-     * @param imageItem         当前图片信息
-     * @param totalPreviewCount 总预览数
-     */
+
     public abstract void onPageSelected(int position, ImageItem imageItem, int totalPreviewCount);
 
 
@@ -77,22 +67,7 @@ public abstract class PreviewControllerView extends PBaseLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    /**
-     * 获取预览的fragment里的布局
-     *
-     * @param fragment 当前加载的fragment，可以使用以下方式来绑定生命周期
-     * <p>
-     *         fragment.getLifecycle().addObserver(new ILifeCycleCallBack() {
-     *             public void onResume() {}
-     *             public void onPause() {}
-     *             public void onDestroy() {}
-     *         });
-     *</p>
-     *
-     * @param imageItem  当前加载imageitem
-     * @param presenter presenter
-     * @return 预览的布局
-     */
+
     public View getItemView(Fragment fragment, final ImageItem imageItem, IPickerPresenter presenter) {
         if (imageItem == null) {
             return new View(fragment.getContext());
@@ -101,7 +76,6 @@ public abstract class PreviewControllerView extends PBaseLayout {
         RelativeLayout layout = new RelativeLayout(getContext());
         final CropImageView imageView = new CropImageView(getContext());
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        // 启用图片缩放功能
         imageView.setBounceEnable(true);
         imageView.enable();
         imageView.setShowImageRectLine(false);

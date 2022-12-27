@@ -31,19 +31,9 @@ import java.io.OutputStream;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 
-/**
- * Time: 2019/7/17 14:16
- * Author:ypx
- * Description:文件工具类
- */
+
 public class PBitmapUtils {
-    /**
-     * 根据相对路径获取图片宽高
-     *
-     * @param c   上下文
-     * @param uri 图片uri地址
-     * @return 宽高信息
-     */
+
 
     public static int[] getImageWidthHeight(Context c, Uri uri) {
         try {
@@ -99,10 +89,7 @@ public class PBitmapUtils {
     }
 
 
-    /**
-     * @param context 上下文
-     * @return 获取app私有目录
-     */
+
     public static File getPickerFileDirectory(Context context) {
         File file = new File(context.getExternalFilesDir(null), ImagePicker.DEFAULT_FILE_NAME);
         if (!file.exists()) {
@@ -113,9 +100,7 @@ public class PBitmapUtils {
         return file;
     }
 
-    /**
-     * 获取系统相册文件路径
-     */
+
     public static File getDCIMDirectory() {
         File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         if (!dcim.exists()) {
@@ -299,9 +284,7 @@ public class PBitmapUtils {
         }
     }
 
-    /**
-     * @return view的截图，在InVisible时也可以获取到bitmap
-     */
+
     public static Bitmap getViewBitmap(View view) {
         view.measure(View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
@@ -312,18 +295,14 @@ public class PBitmapUtils {
     }
 
 
-    /**
-     * 获取视频封面
-     */
+
     public static Bitmap getVideoThumb(String path) {
         MediaMetadataRetriever media = new MediaMetadataRetriever();
         media.setDataSource(path);
         return media.getFrameAtTime();
     }
 
-    /**
-     * 获取视频时长
-     */
+
     public static long getLocalVideoDuration(String videoPath) {
         int duration;
         try {

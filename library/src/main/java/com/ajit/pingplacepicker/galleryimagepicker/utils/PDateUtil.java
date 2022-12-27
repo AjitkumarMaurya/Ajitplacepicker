@@ -63,9 +63,6 @@ public class PDateUtil {
     }
 
 
-    /**
-     * 获取视频时长（格式化）
-     */
     public static String getVideoDuration(long timestamp) {
         if (timestamp < 1000) {
             return "00:01";

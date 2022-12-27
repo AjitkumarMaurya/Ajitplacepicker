@@ -7,11 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.ajit.pingplacepicker.galleryimagepicker.widget.cropimage.CropImageView;
 
-/**
- * Time: 2019/11/13 14:39
- * Author:ypx
- * Description:自定义剪裁页面
- */
 public abstract class SingleCropControllerView extends PBaseLayout {
 
     /**
@@ -19,15 +14,9 @@ public abstract class SingleCropControllerView extends PBaseLayout {
      */
     public abstract void setStatusBar();
 
-    /**
-     * @return 获取可以点击完成的View
-     */
     public abstract View getCompleteView();
 
-    /**
-     * @param cropImageView 剪裁的ImageView
-     * @param params        params
-     */
+
     public abstract void setCropViewParams(CropImageView cropImageView, MarginLayoutParams params);
 
     public SingleCropControllerView(Context context) {

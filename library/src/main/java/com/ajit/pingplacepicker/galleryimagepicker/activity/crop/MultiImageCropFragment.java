@@ -507,7 +507,6 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
             if (selectConfig.hasFirstImageItem()) {
                 firstImageItem = selectConfig.getFirstImageItem();
             } else {
-                //没有已经存在的第一张图信息，则获取选中的第一张图的剪裁模式作为全局的剪裁模式
                 if (selectList.size() > 0) {
                     firstImageItem = selectList.get(0);
                 } else {
@@ -722,9 +721,6 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
         }
     }
 
-    /**
-     * @return 获取第一个有效的item（可以选择的）
-     */
     private int getCanPressItemPosition() {
         for (int i = 0; i < imageItems.size(); i++) {
             ImageItem imageItem = imageItems.get(i);

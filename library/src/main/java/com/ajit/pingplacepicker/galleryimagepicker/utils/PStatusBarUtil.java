@@ -170,16 +170,13 @@ public class PStatusBarUtil {
 
     private static int statusBarHeight;
 
-    /**
-     * 利用反射获取状态栏高度
-     */
+
     public static int getStatusBarHeight(Context activity) {
         if (statusBarHeight != 0) {
             return statusBarHeight;
         }
         try {
             int result = 0;
-            //获取状态栏高度的资源id
             int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
                 result = activity.getResources().getDimensionPixelSize(resourceId);

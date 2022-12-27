@@ -235,9 +235,6 @@ public class RecyclerViewTouchHelper {
     }
 
 
-    /**
-     * 获取recyclerView滑动距离
-     */
     private int getScrollYDistance() {
         if (!(recyclerView.getLayoutManager() instanceof GridLayoutManager)) {
             return 0;

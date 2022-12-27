@@ -156,11 +156,7 @@ public class PPermissionUtils {
 
     }
 
-    /**
-     * 获取应用详情页面intent（如果找不到要跳转的界面，也可以先把用户引导到系统设置页面）
-     *
-     * @return
-     */
+
     private Intent getAppDetailSettingIntent() {
         Intent localIntent = new Intent();
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

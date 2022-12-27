@@ -14,24 +14,12 @@ import com.ajit.pingplacepicker.galleryimagepicker.presenter.IPickerPresenter;
  */
 public abstract class PickerFolderItemView extends PBaseLayout {
 
-    /**
-     * @return 获取每个item的高度，如果自适应返回-1
-     */
+
     public abstract int getItemHeight();
 
-    /**
-     * 加载文件夹缩略图
-     *
-     * @param imageSet  文件夹
-     * @param presenter presenter
-     */
+
     public abstract void displayCoverImage(ImageSet imageSet, IPickerPresenter presenter);
 
-    /**
-     * 加载item
-     *
-     * @param imageSet 当前文件夹信息
-     */
     public abstract void loadItem(ImageSet imageSet);
 
     public PickerFolderItemView(Context context) {

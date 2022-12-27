@@ -8,12 +8,6 @@ import android.view.WindowManager;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Description: View尺寸相关工具类
- * <p>
- * Author: peixing.yang
- * Date: 2018/12/24-15:40
- */
 final public class PViewSizeUtils {
     public static void setViewSize(View view, int width, int height) {
         WeakReference<View> viewWeakReference = new WeakReference<>(view);
@@ -95,12 +89,7 @@ final public class PViewSizeUtils {
         }
     }
 
-    /**
-     * 获取View的高度
-     *
-     * @param v view
-     * @return 高度
-     */
+
     public static int getViewHeight(View v) {
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params != null) {
@@ -109,12 +98,7 @@ final public class PViewSizeUtils {
         return v.getHeight();
     }
 
-    /**
-     * 获取View的宽度
-     *
-     * @param v view
-     * @return 宽度
-     */
+
     public static int getViewWidth(View v) {
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params != null) {
@@ -193,9 +177,7 @@ final public class PViewSizeUtils {
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    /**
-     * 获得屏幕宽度
-     */
+
     public static int getScreenWidth(Context context) {
         if (context == null) {
             return 0;
@@ -207,9 +189,7 @@ final public class PViewSizeUtils {
         return outMetrics.widthPixels;
     }
 
-    /**
-     * 获得屏幕高度
-     */
+
     public static int getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -218,14 +198,7 @@ final public class PViewSizeUtils {
         return outMetrics.heightPixels;
     }
 
-    /**
-     * 两个颜色渐变转化
-     *
-     * @param color1 默认色
-     * @param color2 目标色
-     * @param ratio  渐变率（0~1）
-     * @return 计算后的颜色
-     */
+
     public static int blendColors(int color1, int color2, float ratio) {
         final float inverseRation = 1f - ratio;
         float r = (Color.red(color1) * ratio)

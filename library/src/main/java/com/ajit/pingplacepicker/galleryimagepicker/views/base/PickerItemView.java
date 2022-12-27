@@ -11,54 +11,19 @@ import com.ajit.pingplacepicker.galleryimagepicker.bean.ImageItem;
 import com.ajit.pingplacepicker.galleryimagepicker.bean.selectconfig.BaseSelectConfig;
 import com.ajit.pingplacepicker.galleryimagepicker.presenter.IPickerPresenter;
 
-/**
- * Time: 2019/8/8 15:42
- * Author:ypx
- * Description:自定义item基类
- * <p>
- * 执行流程：
- * initItem——> enableItem ——> disableItem
- * </p>
- */
 public abstract class PickerItemView extends PBaseLayout {
-    /**
-     * 获取拍照item样式
-     *
-     * @param selectConfig 选择配置类
-     * @param presenter    implements of {@link com.ajit.pingplacepicker.galleryimagepicker.presenter.IPickerPresenter}
-     * @return 拍照
-     */
+
     public abstract View getCameraView(BaseSelectConfig selectConfig, IPickerPresenter presenter);
 
-    /**
-     * @return 返回用于点击选中item的view
-     */
     public abstract View getCheckBoxView();
 
-    /**
-     * 初始化item
-     *
-     * @param imageItem    当前图片
-     * @param presenter    presenter
-     * @param selectConfig 选择器配置项
-     */
+
     public abstract void initItem(ImageItem imageItem, IPickerPresenter presenter, BaseSelectConfig selectConfig);
 
-    /**
-     * 当检测到此item不能被选中时，执行此方法
-     *
-     * @param imageItem   当前图片
-     * @param disableCode 不能选中的原因 {@link com.ajit.pingplacepicker.galleryimagepicker.bean.PickerItemDisableCode}
-     */
+
     public abstract void disableItem(ImageItem imageItem, int disableCode);
 
-    /**
-     * 在disableItem之前调用，用于正常加载每个item
-     *
-     * @param imageItem           当前图片
-     * @param isChecked           是否已经被选中
-     * @param indexOfSelectedList 在已选中列表里的索引
-     */
+
     public abstract void enableItem(ImageItem imageItem, boolean isChecked, int indexOfSelectedList);
 
     private RecyclerView.Adapter adapter;

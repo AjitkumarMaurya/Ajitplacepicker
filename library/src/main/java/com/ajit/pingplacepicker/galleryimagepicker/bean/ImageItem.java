@@ -337,11 +337,7 @@ public class ImageItem implements Serializable, Parcelable {
         return width * 1.00f / (height * 1.00f);
     }
 
-    /**
-     * 获取图片宽高类型，误差0.1
-     *
-     * @return 1：宽图  -1：高图  0：方图
-     */
+
     public int getWidthHeightType() {
         if (getWidthHeightRatio() > 1.02f) {
             return 1;

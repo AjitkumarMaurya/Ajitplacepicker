@@ -168,9 +168,7 @@ public class MediaItemsDataSource implements LoaderManager.LoaderCallbacks<Curso
                             allVideoItems.add(item);
                         }
                     }
-                    //图片
                     else {
-                        //如果媒体信息中不包含图片的宽高，则手动获取文件宽高
                         if (item.width == 0 || item.height == 0) {
                             if (!item.isUriPath()) {
                                 int[] size = PBitmapUtils.getImageWidthHeight(item.path);

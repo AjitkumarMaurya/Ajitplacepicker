@@ -52,69 +52,42 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
     //选中图片列表
     protected ArrayList<ImageItem> selectList = new ArrayList<>();
 
-    /**
-     * @return 获取选择器配置项，主要用于加载文件类型的指定
-     */
     @NonNull
     protected abstract BaseSelectConfig getSelectConfig();
 
-    /**
-     * @return 获取presenter
-     */
+
     @NonNull
     protected abstract IPickerPresenter getPresenter();
 
-    /**
-     * @return 获取presenter
-     */
+
     @NonNull
     protected abstract PickerUiConfig getUiConfig();
 
-    /**
-     * 执行回调
-     */
+
     protected abstract void notifyPickerComplete();
 
-    /**
-     * 切换文件夹
-     */
+
     protected abstract void toggleFolderList();
 
-    /**
-     * 跳转预览页面
-     *
-     * @param isClickItem 是否是item点击
-     * @param index       当前图片位于预览列表数据源的索引
-     */
+
     protected abstract void intentPreview(boolean isClickItem, int index);
 
-    /**
-     * @param imageSetList 媒体文件夹加载完成回调
-     */
+
     protected abstract void loadMediaSetsComplete(@Nullable List<ImageSet> imageSetList);
 
-    /**
-     * @param set 媒体文件夹内文件加载完成回调
-     */
+
     protected abstract void loadMediaItemsComplete(@Nullable ImageSet set);
 
-    /**
-     * @param allVideoSet 刷新所有视频的文件夹
-     */
+
     protected abstract void refreshAllVideoSet(@Nullable ImageSet allVideoSet);
 
 
-    /**
-     * @return 返回需要判断当前文件夹列表是否打开
-     */
     public boolean onBackPressed() {
         return false;
     }
 
 
-    /**
-     * @param imageItem 回调一张图片
-     */
+
     protected void notifyOnSingleImagePickComplete(ImageItem imageItem) {
         selectList.clear();
         selectList.add(imageItem);
@@ -122,11 +95,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
     }
 
 
-    /**
-     * 是否超过最大限制数
-     *
-     * @return true:超过
-     */
     private boolean isOverMaxCount() {
         if (selectList.size() >= getSelectConfig().getMaxCount()) {
             getPresenter().overMaxCountTip(getContext(), getSelectConfig().getMaxCount());
@@ -135,9 +103,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         return false;
     }
 
-    /**
-     * 检测当前拍照item是拍照还是录像
-     */
     protected void checkTakePhotoOrVideo() {
         if (getSelectConfig().isShowVideo() && !getSelectConfig().isShowImage()) {
             takeVideo();
@@ -146,9 +111,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 拍照
-     */
+
     @Override
     public void takePhoto() {
         if (getActivity() == null || isOverMaxCount()) {
@@ -189,9 +152,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 加载媒体文件夹
-     */
     protected void loadMediaSets() {
         if (getActivity() == null) {
             return;
@@ -203,7 +163,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQ_STORAGE);
             } else {
-                //从媒体库拿到文件夹列表
                 ImagePicker.provideMediaSets(getActivity(), getSelectConfig().getMimeTypes(), new MediaSetsDataSource.MediaSetProvider() {
                     @Override
                     public void providerMediaSets(ArrayList<ImageSet> imageSets) {
@@ -216,7 +175,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_STORAGE);
             } else {
-                //从媒体库拿到文件夹列表
                 ImagePicker.provideMediaSets(getActivity(), getSelectConfig().getMimeTypes(), new MediaSetsDataSource.MediaSetProvider() {
                     @Override
                     public void providerMediaSets(ArrayList<ImageSet> imageSets) {
@@ -227,11 +185,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 根据指定的媒体 文件夹加载文件
-     *
-     * @param set 文件夹
-     */
+
     protected void loadMediaItemsFromSet(final @NonNull ImageSet set) {
         if (set.imageItems == null || set.imageItems.size() == 0) {
             DialogInterface dialogInterface = null;
@@ -274,7 +228,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
                                            @NonNull int[] grantResults) {
         if (requestCode == REQ_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //申请成功，可以拍照
                 takePhoto();
             } else {
                 PPermissionUtils.create(getContext()).showSetPermissionDialog(
@@ -282,7 +235,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
             }
         } else if (requestCode == REQ_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //申请成功，可以拍照
                 loadMediaSets();
             } else {
                 PPermissionUtils.create(getContext()).
@@ -296,14 +248,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
     protected PickerControllerView titleBar;
     protected PickerControllerView bottomBar;
 
-    /**
-     * 加载自定义控制器布局
-     *
-     * @param container 布局容器
-     * @param isTitle   是否是顶部栏
-     * @param uiConfig  ui配置
-     * @return 当前需要记载的控制器
-     */
+
     protected PickerControllerView inflateControllerView(ViewGroup container, boolean isTitle, PickerUiConfig uiConfig) {
         final BaseSelectConfig selectConfig = getSelectConfig();
         PickerUiProvider uiProvider = uiConfig.getPickerUiProvider();
@@ -350,11 +295,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         return view;
     }
 
-    /**
-     * 控制器view执行切换文件夹操作
-     *
-     * @param isOpen 是否是打开文件夹
-     */
+
     protected void controllerViewOnTransitImageSet(boolean isOpen) {
         if (titleBar != null) {
             titleBar.onTransitImageSet(isOpen);
@@ -364,11 +305,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 控制器view执行文件夹选择完成
-     *
-     * @param set 当前选择文件夹
-     */
+
     protected void controllerViewOnImageSetSelected(ImageSet set) {
         if (titleBar != null) {
             titleBar.onImageSetSelected(set);
@@ -378,9 +315,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 刷新完成按钮
-     */
     protected void refreshCompleteState() {
         if (titleBar != null) {
             titleBar.refreshCompleteViewState(selectList, getSelectConfig());
@@ -391,13 +325,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         }
     }
 
-    /**
-     * 设置文件夹列表的高度
-     *
-     * @param mFolderListRecyclerView 文件夹列表
-     * @param mImageSetMask           文件夹列表的灰色透明蒙层
-     * @param isCrop                  是否是小红书样式
-     */
+
     protected void setFolderListHeight(RecyclerView mFolderListRecyclerView, View mImageSetMask, boolean isCrop) {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mFolderListRecyclerView.getLayoutParams();
         RelativeLayout.LayoutParams maskParams = (RelativeLayout.LayoutParams) mImageSetMask.getLayoutParams();
@@ -430,13 +358,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         mImageSetMask.setLayoutParams(maskParams);
     }
 
-    /**
-     * 是否拦截不可点击的item
-     *
-     * @param disableItemCode     不可点击的item的code码
-     * @param isCheckOverMaxCount 是否校验超过最大数量时候的item
-     * @return 是否拦截掉
-     */
+
     protected boolean interceptClickDisableItem(int disableItemCode, boolean isCheckOverMaxCount) {
         if (disableItemCode != PickerItemDisableCode.NORMAL) {
             if (!isCheckOverMaxCount && disableItemCode == PickerItemDisableCode.DISABLE_OVER_MAX_COUNT) {
@@ -452,14 +374,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
     }
 
 
-    /**
-     * 添加一个图片到文件夹列表里。一般在拍照完成的回调里会执行该方法，用于手动添加
-     * 一个item到指定的文件夹列表里
-     *
-     * @param imageSets  当前的文件夹列表
-     * @param imageItems 当前文件夹列表里面的item数组
-     * @param imageItem  当前要插入的文件
-     */
+
     protected void addItemInImageSets(@NonNull List<ImageSet> imageSets,
                                       @NonNull List<ImageItem> imageItems,
                                       @NonNull ImageItem imageItem) {
@@ -487,9 +402,6 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
 
     private WeakReference<Activity> weakReference;
 
-    /**
-     * @return 获取弱引用的activity对象
-     */
     protected Activity getWeakActivity() {
         if (getActivity() != null) {
             if (weakReference == null) {
