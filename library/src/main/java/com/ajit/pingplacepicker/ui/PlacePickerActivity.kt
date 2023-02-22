@@ -2,10 +2,13 @@ package com.ajit.pingplacepicker.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
@@ -59,6 +62,8 @@ import com.karumi.dexter.listener.single.BasePermissionListener
 import io.reactivex.disposables.CompositeDisposable
 import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.IOException
+import java.util.*
 import kotlin.math.abs
 
 
@@ -67,6 +72,9 @@ class PlacePickerActivity : AppCompatActivity(),
     OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
     PlaceConfirmDialogFragment.OnPlaceConfirmedListener {
+    var addressStr: String = ""
+    var locality: String = ""
+    var area: String = ""
 
     companion object {
 
@@ -177,7 +185,7 @@ class PlacePickerActivity : AppCompatActivity(),
         if ((requestCode == AUTOCOMPLETE_REQUEST_CODE) && (resultCode == Activity.RESULT_OK)) {
             data?.run {
                 val place = Autocomplete.getPlaceFromIntent(this)
-                    moveCameraToSelectedPlace(place)
+                moveCameraToSelectedPlace(place)
                 showConfirmPlacePopup(place)
             }
         }
@@ -218,7 +226,6 @@ class PlacePickerActivity : AppCompatActivity(),
     }
 
 
-
     override fun onMarkerClick(marker: Marker): Boolean {
 
         val place = marker.tag as Place
@@ -230,11 +237,35 @@ class PlacePickerActivity : AppCompatActivity(),
     override fun onPlaceConfirmed(place: Place) {
         val data = Intent()
 
+        try {
+            val dataList: List<Address?>? =
+                getGeocoderAddress(place.latLng?.latitude, place.latLng?.longitude, this)
+            if (dataList != null && dataList.isNotEmpty()) {
+                if (dataList[0]!!.getAddressLine(0) != null) {
+                    addressStr = dataList[0]!!.getAddressLine(0)
+                }
+                locality = dataList[0]!!.locality
+                area = dataList[0]!!.subLocality
+            } else {
+                addressStr = "Unknown road"
+                locality = ""
+                area = ""
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "onPlaceConfirmed: ")
+        }
+
         if (intent.getBooleanExtra(EXTRA_RETURN_ACTUAL_LATLNG, false)) {
             data.putExtra(PingPlacePicker.EXTRA_ACTUAL_LATLNG, selectedLatLng)
         } else {
             data.putExtra(PingPlacePicker.EXTRA_ACTUAL_LATLNG, place.latLng)
         }
+
+        data.putExtra("addressStr", addressStr)
+        data.putExtra("locality", locality)
+        data.putExtra("area", area)
+        data.putExtra(PingPlacePicker.EXTRA_ACTUAL_LATLNG, selectedLatLng)
+        data.putExtra(PingPlacePicker.EXTRA_ACTUAL_LATLNG, selectedLatLng)
 
         data.putExtra(PingPlacePicker.EXTRA_PLACE, place)
         setResult(Activity.RESULT_OK, data)
@@ -473,10 +504,13 @@ class PlacePickerActivity : AppCompatActivity(),
                 pbLoading.show()
             }
             Resource.Status.SUCCESS -> {
-                if (result.data !=null){
+                if (result.data != null) {
                     result.data.run { showConfirmPlacePopup(this) }
-                }else{
-                    val place = PlaceFromCoordinates(selectedLatLng.latitude, selectedLatLng.longitude) as Place
+                } else {
+                    val place = PlaceFromCoordinates(
+                        selectedLatLng.latitude,
+                        selectedLatLng.longitude
+                    ) as Place
                     showConfirmPlacePopup(place)
                 }
                 pbLoading.hide()
@@ -720,5 +754,25 @@ class PlacePickerActivity : AppCompatActivity(),
         setMapStyle()
         map?.setOnMarkerClickListener(this)
         checkForPermission()
+    }
+
+    fun getGeocoderAddress(
+        latitude: Double?,
+        longitude: Double?,
+        context: Context?
+    ): List<Address?>? {
+        try {
+            if (latitude != null && longitude != null) {
+                val geocoder = Geocoder(context!!, Locale.getDefault())
+                try {
+                    return geocoder.getFromLocation(latitude, longitude, 1)
+                } catch (e: IOException) {
+                    Log.e("Error : Geocoder", "Impossible to connect to Geocoder", e)
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

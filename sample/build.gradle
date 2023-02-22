@@ -14,8 +14,8 @@ android {
         applicationId "com.myassociation"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 16
-        versionName "16"
+        versionCode 17
+        versionName "17"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
