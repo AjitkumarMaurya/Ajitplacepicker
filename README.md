@@ -70,6 +70,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     if ((requestCode == REQUEST_PLACE_PICKER) && (resultCode == Activity.RESULT_OK)) {
         val place: Place? = PingPlacePicker.getPlace(data!!)
         toast("You selected: ${place?.name}")
+        toast("You selected: ${data.getData().getStringExtra("addressStr")}")
+        toast("You selected: ${place?.name}")
     }
 }
 ```
