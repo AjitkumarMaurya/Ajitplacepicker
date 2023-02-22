@@ -29,6 +29,7 @@ import com.ajit.pingplacepicker.PingPlacePicker
 import com.ajit.pingplacepicker.R
 import com.ajit.pingplacepicker.helper.PermissionsHelper
 import com.ajit.pingplacepicker.inject.PingKoinComponent
+import com.ajit.pingplacepicker.repository.googlemaps.PlaceFromCoordinates
 import com.ajit.pingplacepicker.viewmodel.PlacePickerViewModel
 import com.ajit.pingplacepicker.viewmodel.Resource
 import com.google.android.gms.common.api.ApiException
@@ -120,6 +121,7 @@ class PlacePickerActivity : AppCompatActivity(),
     private lateinit var btnRefreshLocation: FloatingActionButton
     private lateinit var cardSearch: MaterialCardView
     private lateinit var appBarLayout: AppBarLayout
+    private lateinit var marker: Marker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,7 +177,7 @@ class PlacePickerActivity : AppCompatActivity(),
         if ((requestCode == AUTOCOMPLETE_REQUEST_CODE) && (resultCode == Activity.RESULT_OK)) {
             data?.run {
                 val place = Autocomplete.getPlaceFromIntent(this)
-                moveCameraToSelectedPlace(place)
+                    moveCameraToSelectedPlace(place)
                 showConfirmPlacePopup(place)
             }
         }
@@ -277,7 +279,7 @@ class PlacePickerActivity : AppCompatActivity(),
 
             for (place in places) {
                 place.latLng?.let {
-                    val marker: Marker = addMarker(
+                    marker = addMarker(
                         MarkerOptions()
                             .position(it)
                             .icon(getPlaceMarkerBitmap(place))
@@ -471,7 +473,12 @@ class PlacePickerActivity : AppCompatActivity(),
                 pbLoading.show()
             }
             Resource.Status.SUCCESS -> {
-                result.data?.run { showConfirmPlacePopup(this) }
+                if (result.data !=null){
+                    result.data.run { showConfirmPlacePopup(this) }
+                }else{
+                    val place = PlaceFromCoordinates(selectedLatLng.latitude, selectedLatLng.longitude) as Place
+                    showConfirmPlacePopup(place)
+                }
                 pbLoading.hide()
             }
             Resource.Status.ERROR -> {
@@ -649,7 +656,9 @@ class PlacePickerActivity : AppCompatActivity(),
         googleMap?.cameraPosition?.run {
             selectedLatLng = target
             viewModel.getPlaceByLocation(target).observe(this@PlacePickerActivity,
-                { handlePlaceByLocation(it) })
+                {
+                    handlePlaceByLocation(it)
+                })
         }
     }
 

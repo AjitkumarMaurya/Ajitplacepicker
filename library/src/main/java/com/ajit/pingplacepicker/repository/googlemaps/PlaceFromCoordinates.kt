@@ -35,10 +35,27 @@ internal class PlaceFromCoordinates(
     }
 
     override fun getName(): String? {
-        return "${formatLatitude(latitude)}, ${formatLongitude(longitude)}"
+        return "${latitude}, $longitude"
     }
 
     override fun getOpeningHours(): OpeningHours? {
+        return null
+    }
+
+    override fun getCurbsidePickup(): BooleanPlaceAttributeValue? {
+        return null
+
+    }
+
+    override fun getDelivery(): BooleanPlaceAttributeValue? {
+        return null
+    }
+
+    override fun getDineIn(): BooleanPlaceAttributeValue? {
+        return null
+    }
+
+    override fun getTakeout(): BooleanPlaceAttributeValue? {
         return null
     }
 

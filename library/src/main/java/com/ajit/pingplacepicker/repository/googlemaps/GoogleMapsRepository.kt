@@ -108,6 +108,8 @@ class GoogleMapsRepository constructor(
 
         val paramLocation = "${location.latitude},${location.longitude}"
 
+
+
         return googleMapsAPI.findByLocation(paramLocation, PingPlacePicker.mapsApiKey)
             .map { result: SearchResult ->
                 if (("OK" == result.status) && result.results.isNotEmpty()) {
@@ -115,6 +117,9 @@ class GoogleMapsRepository constructor(
                 }
                 return@map PlaceFromCoordinates(location.latitude, location.longitude)
             }
+
+
+
     }
 
     /**

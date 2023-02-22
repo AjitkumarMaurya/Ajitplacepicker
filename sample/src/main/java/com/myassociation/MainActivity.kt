@@ -3,6 +3,7 @@ package com.myassociation
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,7 +15,6 @@ import com.ajit.pingplacepicker.galleryimagepicker.bean.MimeType
 import com.ajit.pingplacepicker.galleryimagepicker.data.OnImagePickCompleteListener
 import com.ajit.pingsample.R
 import com.google.android.libraries.places.api.model.Place
-import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
@@ -25,32 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnOpenPlacePicker.setOnClickListener {
-            showPlacePicker()
-        }
-        btnOpenGallery.setOnClickListener {
-
-            ImagePicker.withCrop(RedBookPresenter())
-                .setMaxCount(5)
-                .showCamera(true)
-                .setColumnCount(4)
-                .mimeTypes(MimeType.ofImage())
-                .filterMimeTypes(MimeType.GIF)
-                .assignGapState(true)
-                .setFirstImageItem(null)
-                .setFirstImageItemSize(1, 1)
-                .setVideoSinglePick(true)
-                .setMaxVideoDuration(60000L)
-                .setMinVideoDuration(3000L)
-                .pick(
-                    this@MainActivity,
-                    OnImagePickCompleteListener { items ->
-
-
-
-                    } as OnImagePickCompleteListener?)
-
-        }
 
         waitResult = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -82,5 +56,26 @@ class MainActivity : AppCompatActivity() {
             toast("Google Play Services is not Available")
         }
     }
+
+    fun gallery(view: View) {  ImagePicker.withCrop(RedBookPresenter())
+        .setMaxCount(5)
+        .showCamera(true)
+        .setColumnCount(4)
+        .mimeTypes(MimeType.ofImage())
+        .filterMimeTypes(MimeType.GIF)
+        .assignGapState(true)
+        .setFirstImageItem(null)
+        .setFirstImageItemSize(1, 1)
+        .setVideoSinglePick(true)
+        .setMaxVideoDuration(60000L)
+        .setMinVideoDuration(3000L)
+        .pick(
+            this@MainActivity,
+            OnImagePickCompleteListener { items ->
+
+
+
+            } as OnImagePickCompleteListener?)}
+    fun ping(view: View) { showPlacePicker()}
 
 }

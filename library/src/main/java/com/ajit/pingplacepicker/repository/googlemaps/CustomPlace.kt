@@ -1,19 +1,29 @@
 package com.ajit.pingplacepicker.repository.googlemaps
 
 import android.net.Uri
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.*
-import kotlinx.android.parcel.Parcelize
-@Parcelize
 class CustomPlace(
-    var placeId: String,
-    var placeName: String,
+    var placeId: String?,
+    var placeName: String?,
     var placePhotos: MutableList<PhotoMetadata>,
-    var placeAddress: String,
+    var placeAddress: String?,
     var placeTypes: MutableList<Type>,
-    var placeLatLng: LatLng
+    var placeLatLng: LatLng?
 ) : Place() {
+
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        TODO("placePhotos"),
+        parcel.readString(),
+        TODO("placeTypes"),
+        parcel.readParcelable(LatLng::class.java.classLoader)
+    ) {
+    }
 
     override fun getUserRatingsTotal(): Int? {
         return null
@@ -32,6 +42,22 @@ class CustomPlace(
     }
 
     override fun getOpeningHours(): OpeningHours? {
+        return null
+    }
+
+    override fun getCurbsidePickup(): BooleanPlaceAttributeValue? {
+        return null
+    }
+
+    override fun getDelivery(): BooleanPlaceAttributeValue? {
+        return null
+    }
+
+    override fun getDineIn(): BooleanPlaceAttributeValue? {
+        return null
+    }
+
+    override fun getTakeout(): BooleanPlaceAttributeValue? {
         return null
     }
 
@@ -101,7 +127,24 @@ class CustomPlace(
         return 0
     }
 
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(placeId)
+        dest.writeString(placeName)
+        dest.writeString(placeAddress)
+        dest.writeParcelable(placeLatLng, flags)
+    }
+
     override fun getLatLng(): LatLng? {
         return placeLatLng
+    }
+
+    companion object CREATOR : Parcelable.Creator<CustomPlace> {
+        override fun createFromParcel(parcel: Parcel): CustomPlace {
+            return CustomPlace(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CustomPlace?> {
+            return arrayOfNulls(size)
+        }
     }
 }

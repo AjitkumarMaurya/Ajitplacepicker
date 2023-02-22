@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.ajit.pingplacepicker.PingPlacePicker
 import com.ajit.pingplacepicker.repository.PlaceRepository
+import com.ajit.pingplacepicker.repository.googlemaps.PlaceFromCoordinates
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -54,17 +55,22 @@ class PlacePickerViewModel constructor(private var repository: PlaceRepository)
 
         val liveData = MutableLiveData<Resource<Place?>>()
 
-        val disposable: Disposable = repository.getPlaceByLocation(location)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { liveData.value = Resource.loading() }
-                .subscribe(
-                        { result: Place? -> liveData.value = Resource.success(result) },
-                        { error: Throwable -> liveData.value = Resource.error(error) }
-                )
+        try {
+            val disposable: Disposable = repository.getPlaceByLocation(location)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { liveData.value = Resource.loading() }
+                    .subscribe(
+                            { result: Place? -> liveData.value = Resource.success(result) },
+                            { error: Throwable -> liveData.value = Resource.error(error) }
+                    )
 
-        // Keep track of this disposable during the ViewModel lifecycle
-        addDisposable(disposable)
+            // Keep track of this disposable during the ViewModel lifecycle
+            addDisposable(disposable)
+        } catch (e: Exception) {
+            liveData.value = Resource.success(PlaceFromCoordinates(location.latitude, location.longitude) as Place)
+            return liveData
+        }
 
         return liveData
     }

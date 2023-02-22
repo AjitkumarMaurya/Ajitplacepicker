@@ -9,9 +9,10 @@ import java.util.concurrent.TimeUnit
 fun View.onclick(callback: () -> Unit): Disposable {
 
     return clicks()
-            .throttleFirst(1, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                callback()
-            }
+        .throttleFirst(1, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnError { }
+        .subscribe {
+            callback()
+        }
 }
