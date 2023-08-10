@@ -24,7 +24,7 @@ Step 2. Add the dependency
             // Places library
             implementation 'com.google.android.libraries.places:places:2.0.0'
             // PING Place Picker
-            implementation ('com.github.AjitkumarMaurya:Ajitplacepicker:v10.0') {
+            implementation ('com.github.AjitkumarMaurya:Ajitplacepicker:v19.0') {
                                exclude group: 'com.google.android.gms'
                                exclude group: 'androidx.appcompat'
             }
