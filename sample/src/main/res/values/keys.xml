@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- TODO: Move to Firebase remote configs -->
-    <string name="key_google_apis_android" translatable="false">AIzaSyCFC8mioiQhpD0RtwscLFmrTTA-QAwpaio</string>
-    <string name="key_google_apis_maps" translatable="false">AIzaSyCFC8mioiQhpD0RtwscLFmrTTA-QAwpaio</string>
-
-</resources>

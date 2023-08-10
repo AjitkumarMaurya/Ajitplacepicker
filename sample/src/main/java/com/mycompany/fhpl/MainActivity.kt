@@ -1,7 +1,6 @@
 package com.mycompany.fhpl
 
 import android.Manifest
-import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,25 +9,18 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.ajit.pingplacepicker.PingPlacePicker
 import com.ajit.pingplacepicker.galleryimagepicker.ImagePicker
 import com.ajit.pingplacepicker.galleryimagepicker.RedBookPresenter
 import com.ajit.pingplacepicker.galleryimagepicker.bean.MimeType
 import com.ajit.pingplacepicker.galleryimagepicker.data.OnImagePickCompleteListener
 import com.ajit.pingsample.R
-import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
-    var waitResult: ActivityResultLauncher<Intent>? = null
     private val requestIdMultiplePermissions = 1
     private val permissionsRequest: ArrayList<String> =
         arrayListOf(Manifest.permission.CAMERA,Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_VIDEO)
@@ -36,37 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        waitResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-
-                val place: Place? = PingPlacePicker.getPlace(result.data!!)
-                toast("You selected: ${place?.name}\n ${place?.id}")
-
-            }
-        }
     }
 
-    private fun showPlacePicker() {
-
-        val builder = PingPlacePicker.IntentBuilder()
-
-        builder.setAndroidApiKey(getString(R.string.key_google_apis_android))
-            .setMapsApiKey(getString(R.string.key_google_apis_maps))
-
-        // If you want to set a initial location
-        // rather then the current device location.
-        // pingBuilder.setLatLng(LatLng(37.4219999, -122.0862462))
-
-        try {
-            val placeIntent = builder.build(this)
-            waitResult!!.launch(placeIntent)
-        } catch (ex: Exception) {
-            toast("Google Play Services is not Available")
-        }
-    }
 
     fun gallery(view: View) {
 
@@ -95,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun ping(view: View) { showPlacePicker()}
+    fun ping(view: View) {}
 
     private fun doOperation() {
         Toast.makeText(this, "Successfully granted", Toast.LENGTH_LONG).show()
