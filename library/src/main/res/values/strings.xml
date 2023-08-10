@@ -19,7 +19,6 @@
     <string name="permission_fine_location_message">We only need your location to help you find relevant nearby places.</string>
 
 
-
     <color name="white_F5">#F5F5F5</color>
 
     <style name="horizontal_gray_divider">
@@ -27,6 +26,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">#d9d9d9</item>
     </style>
+
     <style name="popupwindow_anim_style">
         <item name="android:windowEnterAnimation">@anim/picker_show2bottom</item>
         <!-- 指定显示的动画xml -->
@@ -77,5 +77,6 @@
     <string name="picker_str_title_right">Complete</string>
     <string name="picker_str_title_video">VideoSelect</string>
     <string name="picker_str_today">Today</string>
+    <string name="title_activity_select_maps">SelectMapsActivity</string>
 
 </resources>

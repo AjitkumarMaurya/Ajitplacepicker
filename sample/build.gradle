@@ -6,16 +6,16 @@ android {
     compileSdkVersion 33
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        applicationId "com.myassociation"
+        applicationId "com.mycompany.fhpl"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 17
-        versionName "17"
+        versionCode 19
+        versionName "19"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -27,6 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.ajit.pingsample'
 }
 
 dependencies {
@@ -42,10 +43,10 @@ dependencies {
     // Support library
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
 
     // Places library
-    implementation 'com.google.android.libraries.places:places:3.0.0'
+    implementation 'com.google.android.libraries.places:places:3.2.0'
 
     // Other
     implementation 'com.github.mcginty:material-colors:1.1.0'

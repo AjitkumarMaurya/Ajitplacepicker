@@ -3,7 +3,6 @@ package com.ajit.pingplacepicker.repository.googlemaps
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FetchPhotoRequest
@@ -14,6 +13,7 @@ import com.ajit.pingplacepicker.PingPlacePicker
 import com.ajit.pingplacepicker.model.SearchResult
 import com.ajit.pingplacepicker.model.SimplePlace
 import com.ajit.pingplacepicker.repository.PlaceRepository
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import io.reactivex.Single
 import java.util.*
 
@@ -112,8 +112,11 @@ class GoogleMapsRepository constructor(
 
         return googleMapsAPI.findByLocation(paramLocation, PingPlacePicker.mapsApiKey)
             .map { result: SearchResult ->
-                if (("OK" == result.status) && result.results.isNotEmpty()) {
-                    return@map mapToCustomPlace(result.results[0])
+                try {
+                    if (("OK" == result.status) && result.results.isNotEmpty()) {
+                        return@map mapToCustomPlace(result.results[0])
+                    }
+                } catch (e: Exception) {
                 }
                 return@map PlaceFromCoordinates(location.latitude, location.longitude)
             }
@@ -141,14 +144,14 @@ class GoogleMapsRepository constructor(
     private fun mapToCustomPlace(place: SimplePlace): CustomPlace {
 
         val photoList = mutableListOf<PhotoMetadata>()
-        place.photos.forEach {
+     /*   place.photos.forEach {
             val photoMetadata = PhotoMetadata.builder(it.photoReference)
                 .setAttributions(it.htmlAttributions.toString())
                 .setHeight(it.height)
                 .setWidth(it.width)
                 .build()
             photoList.add(photoMetadata)
-        }
+        }*/
 
         val typeList = mutableListOf<Place.Type>()
         place.types.forEach { simpleType ->

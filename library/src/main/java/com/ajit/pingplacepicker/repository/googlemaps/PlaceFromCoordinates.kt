@@ -55,8 +55,44 @@ internal class PlaceFromCoordinates(
         return null
     }
 
+    override fun getReservable(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesBeer(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesBreakfast(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesBrunch(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesDinner(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesLunch(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesVegetarianFood(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun getServesWine(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
+    }
+
     override fun getTakeout(): BooleanPlaceAttributeValue? {
         return null
+    }
+
+    override fun getWheelchairAccessibleEntrance(): BooleanPlaceAttributeValue {
+        TODO("Not yet implemented")
     }
 
     override fun getId(): String? {
@@ -65,6 +101,10 @@ internal class PlaceFromCoordinates(
 
     override fun getPhotoMetadatas(): MutableList<PhotoMetadata> {
         return mutableListOf()
+    }
+
+    override fun getSecondaryOpeningHours(): MutableList<OpeningHours>? {
+        TODO("Not yet implemented")
     }
 
     override fun getWebsiteUri(): Uri? {
@@ -91,12 +131,24 @@ internal class PlaceFromCoordinates(
         return null
     }
 
+    override fun getCurrentOpeningHours(): OpeningHours? {
+        TODO("Not yet implemented")
+    }
+
     override fun getAttributions(): MutableList<String> {
         return mutableListOf()
     }
 
     override fun getAddress(): String? {
         return null
+    }
+
+    override fun getEditorialSummary(): String? {
+        TODO("Not yet implemented")
+    }
+
+    override fun getEditorialSummaryLanguageCode(): String? {
+        TODO("Not yet implemented")
     }
 
     override fun getIconUrl(): String? {

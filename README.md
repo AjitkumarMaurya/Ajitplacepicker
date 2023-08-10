@@ -137,7 +137,8 @@ For day/light theme:
 </color>
 
     <!-- Text colors -->
-<color name="textColorPrimary">@color/material_on_surface_emphasis_high_type</color><color
+<color name="textColorPrimary">@color/material_on_surface_emphasis_high_type</color>
+<color
 name="textColorSecondary">@color/material_on_surface_emphasis_medium
 </color>
 

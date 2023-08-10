@@ -68,7 +68,7 @@ public class PDateUtil {
             return "00:01";
         }
         Date date = new Date(timestamp);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM:ss");
         return simpleDateFormat.format(date);
     }
 
