@@ -14,8 +14,8 @@ android {
         applicationId "com.mycompany.fhpl"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 20
-        versionName "20"
+        versionCode 21
+        versionName "21"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -44,12 +44,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.9.0'
-
-    // Places library
-    implementation 'com.google.android.libraries.places:places:3.2.0'
-
-    // Other
-    implementation 'com.github.mcginty:material-colors:1.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
