@@ -43,7 +43,7 @@
             <ImageButton
                 android:id="@+id/stateBtn"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="26dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="15dp"

@@ -1,5 +1,6 @@
 package com.ajit.pingplacepicker.galleryimagepicker.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -89,16 +90,11 @@ public class PickerItemAdapter extends RecyclerView.Adapter<PickerItemAdapter.It
 
 
     @Override
-    public void onBindViewHolder(@NonNull final ItemViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
         int itemViewType = getItemViewType(position);
         final ImageItem imageItem = getItem(position);
         if (itemViewType == ITEM_TYPE_CAMERA || imageItem == null) {
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    preformClickItem(null, -1);
-                }
-            });
+            viewHolder.itemView.setOnClickListener(view -> preformClickItem(null, -1));
             return;
         }
         PickerItemView pickerItemView = viewHolder.pickerItemView;
@@ -112,24 +108,19 @@ public class PickerItemAdapter extends RecyclerView.Adapter<PickerItemAdapter.It
         final int finalDisableCode = PickerItemDisableCode.getItemDisableCode(imageItem, selectConfig,
                 selectList, isContainsThisItem);
         if (pickerItemView.getCheckBoxView() != null) {
-            pickerItemView.getCheckBoxView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onActionResult != null) {
-                        isPreformClick = false;
-                        onActionResult.onCheckItem(imageItem, finalDisableCode);
-                    }
+            pickerItemView.getCheckBoxView().setOnClickListener(view -> {
+                if (onActionResult != null) {
+                    isPreformClick = false;
+                    onActionResult.onCheckItem(imageItem, finalDisableCode);
                 }
             });
         }
 
-        pickerItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onActionResult != null) {
-                    isPreformClick = false;
-                    onActionResult.onClickItem(imageItem, position, finalDisableCode);
-                }
+        pickerItemView.setOnClickListener(view -> {
+            if (onActionResult != null) {
+                isPreformClick = false;
+                onActionResult.onCheckItem(imageItem, finalDisableCode);
+                onActionResult.onClickItem(imageItem, position, finalDisableCode);
             }
         });
 

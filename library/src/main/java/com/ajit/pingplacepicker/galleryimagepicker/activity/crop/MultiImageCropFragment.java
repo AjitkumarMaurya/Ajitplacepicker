@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -626,7 +627,7 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
         if (selectList.size() > 0 && selectList.get(0).isVideo()) {
         } else {
             //正在编辑
-            if (mCropView.isEditing()) {
+            if (mCropView!=null&& mCropView.isEditing()) {
                 return;
             }
             //未加载出图片
@@ -638,6 +639,11 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
                 return;
             }
             selectList = cropViewContainerHelper.generateCropUrls(selectList, cropMode);
+
+            if (selectList==null || selectList.isEmpty()){
+                Toast.makeText(requireActivity(), "Please select at least on item from the gallery", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         //如果拦截了完成操作，则执行自定义的拦截操作

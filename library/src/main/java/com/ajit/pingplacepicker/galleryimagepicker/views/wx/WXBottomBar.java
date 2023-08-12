@@ -53,6 +53,7 @@ public class WXBottomBar extends PickerControllerView {
         mCheckBox = view.findViewById(R.id.mCheckBox);
         setCheckBoxDrawable(R.mipmap.picker_wechat_unselect, R.mipmap.picker_wechat_select);
         setBottomBarColor(Color.parseColor("#303030"));
+
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

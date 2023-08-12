@@ -103,7 +103,6 @@ public class WXItemView extends PickerItemView {
             mImageView.setTypeFromImage(imageItem);
         }
 
-
         mCheckBox.setVisibility(View.VISIBLE);
         mCheckBoxPanel.setVisibility(View.VISIBLE);
 
