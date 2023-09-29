@@ -19,12 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ajit.pingplacepicker.galleryimagepicker.ImagePicker;
 import com.ajit.pingplacepicker.R;
+import com.ajit.pingplacepicker.galleryimagepicker.ImagePicker;
 import com.ajit.pingplacepicker.galleryimagepicker.activity.PBaseLoaderFragment;
 import com.ajit.pingplacepicker.galleryimagepicker.adapter.PickerFolderAdapter;
 import com.ajit.pingplacepicker.galleryimagepicker.adapter.PickerItemAdapter;
@@ -215,9 +216,11 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
         //设置基础样式
         mCropContainer.setBackgroundColor(uiConfig.getCropViewBackgroundColor());
         mGridImageRecyclerView.setBackgroundColor(uiConfig.getPickerBackgroundColor());
-        stateBtn.setImageDrawable(getResources().getDrawable(uiConfig.getFullIconID()));
-        mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(getResources().
-                getDrawable(uiConfig.getFillIconID()), null, null, null);
+        try {
+            stateBtn.setImageDrawable(ContextCompat.getDrawable(requireActivity(),uiConfig.getFullIconID()));
+            mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireActivity(),uiConfig.getFillIconID()), null, null, null);
+        } catch (Exception e) {
+        }
         //设置相册列表高度
         setFolderListHeight(mFolderListRecyclerView, mImageSetMasker, true);
     }
@@ -529,10 +532,18 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
     private void fullOrFit() {
         if (cropMode == ImageCropMode.CropViewScale_FIT) {
             cropMode = ImageCropMode.CropViewScale_FULL;
-            stateBtn.setImageDrawable(getResources().getDrawable(uiConfig.getFitIconID()));
+            try {
+                stateBtn.setImageDrawable(ContextCompat.getDrawable(requireActivity(),uiConfig.getFitIconID()));
+            } catch (Exception e) {
+
+            }
         } else {
             cropMode = ImageCropMode.CropViewScale_FIT;
-            stateBtn.setImageDrawable(getResources().getDrawable(uiConfig.getFullIconID()));
+            try {
+                stateBtn.setImageDrawable(ContextCompat.getDrawable(requireActivity(),uiConfig.getFullIconID()));
+            } catch (Exception e) {
+
+            }
         }
         if (currentImageItem != null) {
             currentImageItem.setCropMode(cropMode);
@@ -603,8 +614,11 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
     private void gapState() {
         mTvFullOrGap.setText(getString(R.string.picker_str_redBook_full));
         mCropView.setBackgroundColor(Color.WHITE);
-        mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(getResources().
-                getDrawable(uiConfig.getFillIconID()), null, null, null);
+        try {
+            mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireActivity(),uiConfig.getFillIconID()), null, null, null);
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -613,8 +627,11 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
     private void fullState() {
         mTvFullOrGap.setText(getString(R.string.picker_str_redBook_gap));
         mCropView.setBackgroundColor(Color.TRANSPARENT);
-        mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(getResources().
-                getDrawable(uiConfig.getGapIconID()), null, null, null);
+        try {
+            mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireActivity(),uiConfig.getGapIconID()), null, null, null);
+        } catch (Exception e) {
+
+        }
     }
 
 
