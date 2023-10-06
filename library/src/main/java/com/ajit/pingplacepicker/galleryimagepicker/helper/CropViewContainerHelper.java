@@ -58,28 +58,32 @@ public class CropViewContainerHelper {
         if (cropViewList.containsKey(imageItem) && cropViewList.get(imageItem) != null) {
             mCropView = cropViewList.get(imageItem);
         } else {
-            mCropView = new CropImageView(context);
-            //设置剪裁view的属性
-            mCropView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            mCropView.enable(); // 启用图片缩放功能
-            mCropView.setMaxScale(7.0f);
-            mCropView.setCanShowTouchLine(true);
-            mCropView.setShowImageRectLine(true);
-            if (imageItem.width == 0 || imageItem.height == 0) {
-                mCropView.setOnImageLoadListener(new CropImageView.onImageLoadListener() {
-                    @Override
-                    public void onImageLoaded(float w, float h) {
-                        imageItem.width = (int) w;
-                        imageItem.height = (int) h;
-                        if (loadComplete != null) {
-                            loadComplete.loadComplete();
+            try {
+                mCropView = new CropImageView(context);
+                //设置剪裁view的属性
+                mCropView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mCropView.enable(); // 启用图片缩放功能
+                mCropView.setMaxScale(7.0f);
+                mCropView.setCanShowTouchLine(true);
+                mCropView.setShowImageRectLine(true);
+                if (imageItem.width == 0 || imageItem.height == 0) {
+                    mCropView.setOnImageLoadListener(new CropImageView.onImageLoadListener() {
+                        @Override
+                        public void onImageLoaded(float w, float h) {
+                            imageItem.width = (int) w;
+                            imageItem.height = (int) h;
+                            if (loadComplete != null) {
+                                loadComplete.loadComplete();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
+
+                DetailImageLoadHelper.displayDetailImage(true, mCropView, presenter, imageItem);
+            } catch (Exception e) {
+
             }
-
-
-            DetailImageLoadHelper.displayDetailImage(true, mCropView, presenter, imageItem);
         }
 
         if (getParent() != null) {

@@ -107,6 +107,9 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
         this.imageListener = imageListener;
     }
 
+    public MultiImageCropFragment() {
+    }
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
@@ -625,9 +628,10 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
      * 充满情况下，显示留白状态
      */
     private void fullState() {
-        mTvFullOrGap.setText(getString(R.string.picker_str_redBook_gap));
-        mCropView.setBackgroundColor(Color.TRANSPARENT);
+
         try {
+            mTvFullOrGap.setText(getString(R.string.picker_str_redBook_gap));
+            mCropView.setBackgroundColor(Color.TRANSPARENT);
             mTvFullOrGap.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireActivity(),uiConfig.getGapIconID()), null, null, null);
         } catch (Exception e) {
 
