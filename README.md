@@ -152,8 +152,6 @@ For night/dark theme:
 
 - `res/values-night/colors.xml`
 
-```xml
-
     <color name="colorPrimary">@color/material_teal300</color>
     <!-- Let the primary dark color as the surface color to not colorfy the status bar -->
     <color name="colorPrimaryDark">@color/colorSurface</color>
@@ -174,6 +172,19 @@ For night/dark theme:
 
     <color name="colorMarker">@color/material_deeporange200</color>
     <color name="colorMarkerInnerIcon">@color/colorSurface</color>
+    
+    
+ ##In App Camera   
+    
+ options = Options.init()
+            .setRequestCode(111)
+            .setCount(1)
+            .setFrontfacing(false)
+            .setMode(Options.Mode.Picture)
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
+            .setPath("/storage/self/primary")
+        Pix.start(this@MainActivity, options)    
+    
 
 git tag -a v25 -m "update v25"                                                                                  
 git push origin v25

@@ -27,4 +27,7 @@
     <color name="places_autocomplete_progress_tint">@color/colorSecondary</color>
     <color name="places_autocomplete_error_button">@color/colorPrimary</color>
 
+    <color name="colorPrimaryLightPix">#80075e54</color>
+    <color name="colorPrimaryPix">#075e54</color>
+
 </resources>

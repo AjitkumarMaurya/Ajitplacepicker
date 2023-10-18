@@ -16,10 +16,17 @@ import com.ajit.pingplacepicker.galleryimagepicker.ImagePicker
 import com.ajit.pingplacepicker.galleryimagepicker.RedBookPresenter
 import com.ajit.pingplacepicker.galleryimagepicker.bean.MimeType
 import com.ajit.pingplacepicker.galleryimagepicker.data.OnImagePickCompleteListener
+import com.ajit.pingplacepicker.pix.Options
+import com.ajit.pingplacepicker.pix.Pix
 import com.ajit.pingsample.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
+
+    var options: Options? = null
+    var returnValue = java.util.ArrayList<String>()
+
 
     private val requestIdMultiplePermissions = 1
     private val permissionsRequest: ArrayList<String> =
@@ -58,7 +65,21 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun ping(view: View) {}
+    fun ping(view: View) {
+
+        options = Options.init()
+            .setRequestCode(111)
+            .setCount(1)
+            .setFrontfacing(false)
+            .setExcludeVideos(false)
+            .setExcludeGallery(true)
+            .setMode(Options.Mode.All)
+            .setVideoDurationLimitinSeconds(59)
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
+            .setPath("/storage/self/primary")
+        Pix.start(this@MainActivity, options)
+
+    }
 
     private fun doOperation() {
         Toast.makeText(this, "Successfully granted", Toast.LENGTH_LONG).show()
@@ -157,5 +178,24 @@ class MainActivity : AppCompatActivity() {
             .create()
             .show()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //Log.e("val", "requestCode ->  " + requestCode+"  resultCode "+resultCode);
+        if (requestCode == 111) {
+            if (resultCode == RESULT_OK && data != null) {
+                returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)!!
+                val f: File = File(returnValue.get(0))
+                val returnIntent = Intent()
+                returnIntent.putStringArrayListExtra("listPic", returnValue)
+                returnIntent.putExtra("onPhotoTaken", f.absolutePath)
+                setResult(RESULT_OK, returnIntent)
+
+                Toast.makeText(this,""+f.absolutePath,Toast.LENGTH_LONG).show()
+
+            }
+        }
+    }
+
 
 }
