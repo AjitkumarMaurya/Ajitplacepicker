@@ -436,9 +436,9 @@ public class Pix extends AppCompatActivity implements View.OnTouchListener {
         SizeSelector width = SizeSelectors.minWidth(Utility.WIDTH);
         SizeSelector height = SizeSelectors.minHeight(Utility.HEIGHT);
         SizeSelector dimensions = SizeSelectors.and(width, height); // Matches sizes bigger than width X height
-        SizeSelector ratio = SizeSelectors.aspectRatio(AspectRatio.of(1, 2), 0); // Matches 1:2 sizes.
-        SizeSelector ratio3 = SizeSelectors.aspectRatio(AspectRatio.of(2, 3), 0); // Matches 2:3 sizes.
-        SizeSelector ratio2 = SizeSelectors.aspectRatio(AspectRatio.of(9, 16), 0); // Matches 9:16 sizes.
+        SizeSelector ratio = SizeSelectors.aspectRatio(AspectRatio.of(9, 14), 0); // Matches 1:2 sizes.
+        SizeSelector ratio3 = SizeSelectors.aspectRatio(AspectRatio.of(9, 14), 0); // Matches 2:3 sizes.
+        SizeSelector ratio2 = SizeSelectors.aspectRatio(AspectRatio.of(9, 14), 0); // Matches 9:16 sizes.
         SizeSelector result = SizeSelectors.or(
                 SizeSelectors.and(ratio, dimensions),
                 SizeSelectors.and(ratio2, dimensions),
@@ -1151,15 +1151,15 @@ public class Pix extends AppCompatActivity implements View.OnTouchListener {
         Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(),
                 originalBitmap.getHeight() + extraHeight, Bitmap.Config.ARGB_8888);
 
-        int pw = originalBitmap.getWidth() - 70;
-        int ph = originalBitmap.getHeight() - 20;
+        int pw = originalBitmap.getWidth() - 100;
+        int ph = originalBitmap.getHeight() - 10;
 
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(originalBitmap, 0, 0, null);
 
         Bitmap myLogo =Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(getResources(), options.getWaterMarkDrawable()), 70, 70, false);
+                BitmapFactory.decodeResource(getResources(), options.getWaterMarkDrawable()), 110, 110, false);
         canvas.drawBitmap(myLogo, pw, ph, null);
 
 
