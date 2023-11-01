@@ -5,9 +5,16 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,6 +61,7 @@ import com.ajit.pingplacepicker.pix.utility.PermUtil;
 import com.ajit.pingplacepicker.pix.utility.Utility;
 import com.ajit.pingplacepicker.pix.utility.ui.FastScrollStateChangeListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.otaliastudios.cameraview.BitmapCallback;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.FileCallback;
@@ -68,6 +76,7 @@ import com.otaliastudios.cameraview.size.SizeSelector;
 import com.otaliastudios.cameraview.size.SizeSelectors;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -448,6 +457,8 @@ public class Pix extends AppCompatActivity implements View.OnTouchListener {
         camera.addCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(PictureResult result) {
+
+
                 File dir = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     dir = getExternalFilesDir(options.getPath());
@@ -464,17 +475,56 @@ public class Pix extends AppCompatActivity implements View.OnTouchListener {
                         + new SimpleDateFormat("yyyyMMdd_HHmmSS", Locale.ENGLISH).format(new Date())
                         + ".jpg");
 
-                result.toFile(photo, new FileCallback() {
-                    @Override
-                    public void onFileReady(@Nullable File photo) {
-                        Utility.vibe(Pix.this, 50);
-                        Img img = new Img("", "", photo.getAbsolutePath(), "", 1);
-                        selectionList.add(img);
-                        //Log.e("result photo", "->" + photo.getAbsolutePath());
-                        Utility.scanPhoto(Pix.this, photo);
-                        returnObjects();
-                    }
-                });
+
+
+                if (options.isWaterMark()) {
+                    result.toBitmap(result.getSize().getWidth(), result.getSize().getHeight(), new BitmapCallback() {
+                        @Override
+                        public void onBitmapReady(@Nullable Bitmap bitmap) {
+
+                            runOnUiThread(() -> {
+
+                                Bitmap markBitmap = addStampToImage(bitmap);
+
+                                try {
+                                    FileOutputStream fos = new FileOutputStream(photo);
+                                    markBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                                    fos.flush();
+                                    fos.close();
+                                } catch (Exception e) {
+                                    Toast.makeText(Pix.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                //       Toast.makeText(Pix.this, ""+photo.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+
+                                Utility.vibe(Pix.this, 50);
+                                Img img = new Img("", "", photo.getAbsolutePath(), "", 1);
+                                selectionList.add(img);
+                                //Log.e("result photo", "->" + photo.getAbsolutePath());
+                                Utility.scanPhoto(Pix.this, photo);
+                                returnObjects();
+
+                            });
+
+                        }
+                    });
+                }else {
+                    result.toFile(photo, new FileCallback() {
+                        @Override
+                        public void onFileReady(@Nullable File photo) {
+
+                            Utility.vibe(Pix.this, 50);
+                            Img img = new Img("", "", photo.getAbsolutePath(), "", 1);
+                            selectionList.add(img);
+                            //Log.e("result photo", "->" + photo.getAbsolutePath());
+                            Utility.scanPhoto(Pix.this, photo);
+                            returnObjects();
+
+                        }
+                    });
+                }
+
+
             }
 
             @Override
@@ -1093,4 +1143,67 @@ public class Pix extends AppCompatActivity implements View.OnTouchListener {
         super.onDestroy();
         camera.destroy();
     }
+
+    private Bitmap addStampToImage(Bitmap originalBitmap) {
+
+        int extraHeight = (int) (originalBitmap.getHeight() * 0.04);
+
+        Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(),
+                originalBitmap.getHeight() + extraHeight, Bitmap.Config.ARGB_8888);
+
+        int pw = originalBitmap.getWidth() - 70;
+        int ph = originalBitmap.getHeight() - 20;
+
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(originalBitmap, 0, 0, null);
+
+        Bitmap myLogo =Bitmap.createScaledBitmap(
+                BitmapFactory.decodeResource(getResources(), options.getWaterMarkDrawable()), 70, 70, false);
+        canvas.drawBitmap(myLogo, pw, ph, null);
+
+
+        Resources resources = getResources();
+        float scale = resources.getDisplayMetrics().density;
+
+        String text = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date())+" "+options.getWaterMarkText();
+        Paint pText = new Paint();
+        pText.setColor(Color.BLACK);
+
+        setTextSizeForWidth(pText,(int) (originalBitmap.getHeight() * 0.04),text);
+
+        Rect bounds = new Rect();
+        pText.getTextBounds(text, 0, text.length(), bounds);
+
+        int x=  ((newBitmap.getWidth()-(int)pText.measureText(text))/2);
+        int h=(extraHeight+bounds.height())/2;
+        int y=(originalBitmap.getHeight()+h);
+
+        canvas.drawText(text, x, y, pText);
+
+        return newBitmap;
+    }
+
+
+    private void setTextSizeForWidth(Paint paint, float desiredHeight,
+                                     String text) {
+
+        // Pick a reasonably large value for the test. Larger values produce
+        // more accurate results, but may cause problems with hardware
+        // acceleration. But there are workarounds for that, too; refer to
+        // http://stackoverflow.com/questions/6253528/font-size-too-large-to-fit-in-cache
+        final float testTextSize = 1f;
+
+        // Get the bounds of the text, using our testTextSize.
+        paint.setTextSize(testTextSize);
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+
+        // Calculate the desired size as a proportion of our testTextSize.
+        float desiredTextSize = testTextSize * desiredHeight / bounds.height();
+
+        // Set the paint for that size.
+        paint.setTextSize(desiredTextSize);
+    }
+
 }

@@ -19,6 +19,10 @@ public class Options implements Serializable {
 
     private boolean excludeVideos = false;
     private boolean excludeGallery = false;
+    private boolean waterMark = false;
+    private int waterMarkDrawable;
+    private String waterMarkText;
+
     private Mode mode = Mode.All;
     public static final int SCREEN_ORIENTATION_UNSET = -2;
     public static final int SCREEN_ORIENTATION_UNSPECIFIED = -1;
@@ -102,6 +106,26 @@ public class Options implements Serializable {
 
     public int getWidth() {
         return width;
+    }
+
+
+    public Options setWaterMark(boolean waterMark,int waterMarkDrawable,String waterMarkText){
+        this.waterMark = waterMark;
+        this.waterMarkDrawable = waterMarkDrawable;
+        this.waterMarkText = waterMarkText;
+        return this;
+    }
+
+    public boolean isWaterMark() {
+        return waterMark;
+    }
+
+    public int getWaterMarkDrawable() {
+        return waterMarkDrawable;
+    }
+
+    public String getWaterMarkText() {
+        return waterMarkText;
     }
 
     public boolean isFrontfacing() {

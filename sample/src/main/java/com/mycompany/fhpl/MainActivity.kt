@@ -4,10 +4,12 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     var options: Options? = null
     var returnValue = java.util.ArrayList<String>()
 
+    lateinit var ivImageSelected:ImageView
 
     private val requestIdMultiplePermissions = 1
     private val permissionsRequest: ArrayList<String> =
@@ -34,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ivImageSelected = findViewById(R.id.ivImageSelected);
+
 
     }
 
@@ -73,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             .setFrontfacing(false)
             .setExcludeVideos(false)
             .setExcludeGallery(true)
+            .setWaterMark(true,R.drawable.user,"hi")
             .setMode(Options.Mode.All)
             .setVideoDurationLimitinSeconds(59)
             .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
@@ -190,6 +197,8 @@ class MainActivity : AppCompatActivity() {
                 returnIntent.putStringArrayListExtra("listPic", returnValue)
                 returnIntent.putExtra("onPhotoTaken", f.absolutePath)
                 setResult(RESULT_OK, returnIntent)
+                val bitmapLogoDate = BitmapFactory.decodeFile(f.absolutePath)
+                ivImageSelected.setImageBitmap(bitmapLogoDate)
 
                 Toast.makeText(this,""+f.absolutePath,Toast.LENGTH_LONG).show()
 

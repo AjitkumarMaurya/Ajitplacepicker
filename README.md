@@ -186,5 +186,5 @@ For night/dark theme:
         Pix.start(this@MainActivity, options)    
     
 
-git tag -a v25 -m "update v25"                                                                                  
-git push origin v25
+git tag -a v26 -m "update v26"                                                                                  
+git push origin v26
