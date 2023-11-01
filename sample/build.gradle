@@ -14,8 +14,8 @@ android {
         applicationId "com.mycompany.fhpl"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 28
-        versionName "28"
+        versionCode 29
+        versionName "29"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
